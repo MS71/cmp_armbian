@@ -1,54 +1,61 @@
-From 9270c2efc5e63e8c69338c0cf6c5128fb6808c15 Mon Sep 17 00:00:00 2001
-From: Icenowy Zheng <icenowy@aosc.io>
-Date: Thu, 8 Feb 2018 18:06:13 +0800
-Subject: [PATCH] ARM: sun8i: h2+: add support for Banana Pi M2 Zero board
-
-Banana Pi M2 Zero board is a H2+-based board by Sinovoip, with a form
-factor and GPIO holes similar to Raspberry Pi Zero.
-
-It features:
-- Allwinner H2+ SoC
-- Single-chip (16-bit) 512MiB DDR3 DRAM
-- Ampak AP6212 Wi-Fi/Bluetooth module
-- MicroSD slot
-- Two MicroUSB Type-B ports (one can only be used to power the board and
-  the other features OTG functionality)
-- Two keys, a reset and a GPIO-connected key.
-- HDMI Type-C (miniHDMI) connector connected to the HDMI part of H2+.
-- CSI connector to connect the camera sensor provided by Sinovoip.
-
-Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
-Signed-off-by: Maxime Ripard <maxime.ripard@bootlin.com>
----
- arch/arm/boot/dts/Makefile                         |   1 +
- .../boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts    | 125 +++++++++++++++++++++
- 2 files changed, 126 insertions(+)
- create mode 100644 arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-
-diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index ade7a38543dc9..d5a17e6e8b0f4 100644
---- a/arch/arm/boot/dts/Makefile
-+++ b/arch/arm/boot/dts/Makefile
-@@ -917,6 +917,7 @@ dtb-$(CONFIG_MACH_SUN8I) += \
+diff -Naur linux-4.14.y.org/arch/arm/boot/dts/Makefile linux-4.14.y-bpi-m2z/arch/arm/boot/dts/Makefile
+--- linux-4.14.y.org/arch/arm/boot/dts/Makefile	2017-12-02 18:17:12.316897174 +0800
++++ linux-4.14.y-bpi-m2z/arch/arm/boot/dts/Makefile	2017-12-02 21:55:09.196239029 +0800
+@@ -917,6 +917,7 @@
  	sun8i-a83t-allwinner-h8homlet-v2.dtb \
  	sun8i-a83t-bananapi-m3.dtb \
  	sun8i-a83t-cubietruck-plus.dtb \
 +	sun8i-h2-plus-bananapi-m2-zero.dtb \
  	sun8i-h2-plus-orangepi-zero.dtb \
  	sun8i-h2-plus-nanopi-duo.dtb \
- 	sun8i-h2-plus-sunvell-r69.dtb \
-diff --git a/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts b/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-new file mode 100644
-index 0000000000000..1cdbd9a3ef578
---- /dev/null
-+++ b/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
-@@ -0,0 +1,125 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+ 	sun8i-h3-bananapi-m2-plus.dtb \
+diff -Naur linux-4.14.y.org/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts linux-4.14.y-bpi-m2z/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts
+--- linux-4.14.y.org/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts	1970-01-01 08:00:00.000000000 +0800
++++ linux-4.14.y-bpi-m2z/arch/arm/boot/dts/sun8i-h2-plus-bananapi-m2-zero.dts	2017-12-02 21:55:09.196239029 +0800
+@@ -0,0 +1,220 @@
 +/*
 + * Copyright (C) 2017 Icenowy Zheng <icenowy@aosc.io>
 + *
 + * Based on sun8i-h3-bananapi-m2-plus.dts, which is:
 + *   Copyright (C) 2016 Chen-Yu Tsai <wens@csie.org>
++ *
++ * This file is dual-licensed: you can use it either under the terms
++ * of the GPL or the X11 license, at your option. Note that this dual
++ * licensing only applies to this file, and not this project as a
++ * whole.
++ *
++ *  a) This file is free software; you can redistribute it and/or
++ *     modify it under the terms of the GNU General Public License as
++ *     published by the Free Software Foundation; either version 2 of the
++ *     License, or (at your option) any later version.
++ *
++ *     This file is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ * Or, alternatively,
++ *
++ *  b) Permission is hereby granted, free of charge, to any person
++ *     obtaining a copy of this software and associated documentation
++ *     files (the "Software"), to deal in the Software without
++ *     restriction, including without limitation the rights to use,
++ *     copy, modify, merge, publish, distribute, sublicense, and/or
++ *     sell copies of the Software, and to permit persons to whom the
++ *     Software is furnished to do so, subject to the following
++ *     conditions:
++ *
++ *     The above copyright notice and this permission notice shall be
++ *     included in all copies or substantial portions of the Software.
++ *
++ *     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ *     EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
++ *     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ *     NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
++ *     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
++ *     WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ *     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ *     OTHER DEALINGS IN THE SOFTWARE.
 + */
 +
 +/dts-v1/;
@@ -69,6 +76,17 @@ index 0000000000000..1cdbd9a3ef578
 +
 +	chosen {
 +		stdout-path = "serial0:115200n8";
++	};
++
++	connector {
++		compatible = "hdmi-connector";
++		type = "a";
++
++		port {
++			hdmi_con_in: endpoint {
++				remote-endpoint = <&hdmi_out_con>;
++			};
++		};
 +	};
 +
 +	leds {
@@ -93,6 +111,23 @@ index 0000000000000..1cdbd9a3ef578
 +		};
 +	};
 +
++	reg_sy8113b: gpio-regulator {
++		compatible = "regulator-gpio";
++		regulator-name = "vdd-cpux";
++		regulator-type = "voltage";
++		regulator-boot-on;
++		regulator-always-on;
++		regulator-min-microvolt = <1100000>;
++		regulator-max-microvolt = <1300000>;
++		regulator-ramp-delay = <50>; /* 4ms */
++
++		gpios = <&r_pio 0 1 GPIO_ACTIVE_HIGH>; /* PL1 */
++		enable-active-high;
++		gpios-states = <0x1>;
++		states = <1100000 0x0
++			  1300000 0x1>;
++	};
++
 +	wifi_pwrseq: wifi_pwrseq {
 +		compatible = "mmc-pwrseq-simple";
 +		pinctrl-names = "default";
@@ -100,7 +135,39 @@ index 0000000000000..1cdbd9a3ef578
 +	};
 +};
 +
++&cpu0 {
++	cpu-supply = <&reg_sy8113b>;
++};
++
++
 +&ehci0 {
++	status = "okay";
++};
++
++
++&de {
++	status = "okay";
++};
++
++&hdmi {
++	status = "okay";
++};
++
++&hdmi_out {
++	hdmi_out_con: endpoint {
++		remote-endpoint = <&hdmi_con_in>;
++	};
++};
++
++&sound_hdmi {
++	status = "okay";
++};
++
++&i2s2 {
++	status = "okay";
++};
++
++&mixer0 {
 +	status = "okay";
 +};
 +
@@ -110,11 +177,10 @@ index 0000000000000..1cdbd9a3ef578
 +	vmmc-supply = <&reg_vcc3v3>;
 +	bus-width = <4>;
 +	/*
-+	 * On the production batch of this board the card detect GPIO is
-+	 * high active (card inserted), although on the early samples it's
-+	 * low active.
++	 * In different revisions the board have different card detect
++	 * configuration.
 +	 */
-+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>; /* PF6 */
++	broken-cd;
 +	status = "okay";
 +};
 +
@@ -141,6 +207,10 @@ index 0000000000000..1cdbd9a3ef578
 +	status = "okay";
 +};
 +
++&tcon0 {
++	status = "okay";
++};
++
 +&uart0 {
 +	pinctrl-names = "default";
 +	pinctrl-0 = <&uart0_pins_a>;
@@ -160,11 +230,6 @@ index 0000000000000..1cdbd9a3ef578
 +
 +&usbphy {
 +	usb0_id_det-gpios = <&r_pio 0 6 GPIO_ACTIVE_HIGH>; /* PL6 */
-+	/*
-+	 * There're two micro-USB connectors, one is power-only and another is
-+	 * OTG. The Vbus of these two connectors are connected together, so
-+	 * the external USB device will be powered just by the power input
-+	 * from the power-only USB port.
-+	 */
++	/* USB OTG VBUS is directly connected to 5V without any regulators */
 +	status = "okay";
 +};

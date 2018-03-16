@@ -17,7 +17,7 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 # History
 
 - https://github.com/armbian/build.git forked
-- BSP merged from https://github.com/BPI-SINOVOIP/BPI-files.git
+- BPI-files/others/armbian/build directory merged from https://github.com/BPI-SINOVOIP/BPI-files.git
 - 
 - ...
 
