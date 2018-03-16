@@ -14,6 +14,16 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 - Allwinner H2+ on Banana Pi Zero
 - http://www.banana-pi.org/bpi-zero.html
 
+# Requirements
+
+## CuteCom
+- sudo chmod a+rw /dev/ttyUSB0
+- sudo usermod -a -G dialout userName
+- sudo apt-get install cutecom
+
+## MiniCom
+- sudo apt-get install cutecom
+
 # History
 
 - https://github.com/armbian/build.git forked
@@ -29,7 +39,25 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 	git clone https://github.com/MS71/cmp_armbian.git
 	cd cmp_armbian
 	./compile.sh BOARD=bananapim2zero BRANCH=next KERNEL_ONLY=no RELEASE=xenial BUILD_DESKTOP=no 
+	...
+	sudo dd if=output/images/Armbian_5.41_Bananapim2zero_Ubuntu_xenial_next_4.14.27.img of=/dev/[your sdcard device] bs=8192
+	sync
+	=> insert sdcard
+	=> open minicim connected to serial port (e.g. /dev/ttyUSB0)
+	=> boot system
+	=> login user=root password=1234
+	=> follow instructions
+	armbian-config
+	=> connect to WIFI
+	=> login with ssh root@bananapim2zero
+	apt-get update
+	apt-get upgrade
 	
+	
+	
+
+	
+# Runtime Configuration
 
 
 
