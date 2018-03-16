@@ -1,4 +1,51 @@
-# Armbian
+# Car Media Player Armbian
+
+THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
+
+# Desired Functionality
+
+- Audio streaming via Bluetooth to an A2DP sink
+- Audio streaming via Bluetooth MTP Gadget
+- Audio streaming via USB MTP Gadget
+- Tests with hight speed I2S driver
+
+# Hardware
+
+- Allwinner H2+ on Banana Pi Zero
+- http://www.banana-pi.org/bpi-zero.html
+
+# History
+
+- https://github.com/armbian/build.git forked
+- BSP merged from https://github.com/BPI-SINOVOIP/BPI-files.git
+- 
+- ...
+
+# Build Procedure
+
+**Execution**
+
+	apt-get -y install git
+	git clone https://github.com/armbian/build
+	cd build
+	./compile.sh BOARD=bananapim2zero BRANCH=next KERNEL_ONLY=no RELEASE=xenial
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Origional Armbian README
 
 Ubuntu and Debian images for ARM based single-board computers
 https://www.armbian.com
