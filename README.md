@@ -22,7 +22,7 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 - sudo apt-get install cutecom
 
 ## MiniCom
-- sudo apt-get install cutecom
+- sudo apt-get install minicom
 
 # History
 
@@ -52,12 +52,20 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 	=> login with ssh root@bananapim2zero
 	apt-get update
 	apt-get upgrade
-	
-	
-	
 
-	
 # Runtime Configuration
+
+- cd rootfs
+- scp -r * root@bananapim2zero:/
+
+## Bluetooth
+- apt-get install bluez-tools
+- apt-get install bluez bluez-hcidump
+- apt-get install joe
+=> uncomment AutoEnable=true in /etc/bluetooth/main.conf
+- systemctl enable bluetooth.service 
+- reboot
+
 
 
 
