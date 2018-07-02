@@ -1,0 +1,7 @@
+Description=myservice
+ 
+[Service]
+ExecStart=/root/myservice.sh
+ 
+[Install]
+WantedBy=default.target

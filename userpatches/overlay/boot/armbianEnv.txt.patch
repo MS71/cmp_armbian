@@ -1,0 +1,2 @@
+extraargs="fbcon=map:0"
+user_overlays=spi-ads7846 spi0-add-cs1 fbtft

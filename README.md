@@ -38,7 +38,7 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 	apt-get -y install git
 	git clone https://github.com/MS71/cmp_armbian.git
 	cd cmp_armbian
-	./compile.sh BOARD=bananapim2zero BRANCH=next KERNEL_ONLY=no RELEASE=xenial BUILD_DESKTOP=no 
+        ./compile.sh BOARD=bananapim2zero BRANCH=next KERNEL_ONLY=no INSTALL_HEADERS=yes RELEASE=xenial BUILD_DESKTOP=no
 	...
 	sudo dd if=output/images/Armbian_5.41_Bananapim2zero_Ubuntu_xenial_next_4.14.27.img of=/dev/[your sdcard device] bs=8192
 	sync

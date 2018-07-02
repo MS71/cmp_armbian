@@ -1,0 +1,54 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+        compatible = "allwinner,sun8i-h3";
+
+        fragment@0 {
+                target = <&pio>;
+                __overlay__ {
+                        ads7846_pins: ads7846_pins {
+                                pins= "PA2";
+                                function = "irq";
+                        };
+                };
+        };
+
+        fragment@1 {
+                target = <&spi0>;
+                __overlay__ {
+                        #address-cells = <1>;
+                        #size-cells = <0>;
+                        status = "okay";
+
+                        ads7846@0 {
+                                compatible = "ti,ads7846";
+                                reg = <1>; /* Chip Select 0 */
+                                status = "okay";
+                                pinctrl-names = "default";
+                                pinctrl-0 = <&ads7846_pins>;
+                                spi-max-frequency = <200000>;
+                                interrupt-parent = <&pio>;
+                                interrupts = <0 2 2>; /* PA2 IRQ_TYPE_EDGE_FALLING */
+                                pendown-gpio = <&pio 0 2 0>; /* PA2 */
+
+                                /* driver defaults, optional */
+                                ti,x-min = /bits/ 16 <200>;
+                                ti,x-max = /bits/ 16 <3900>;
+                                ti,y-min = /bits/ 16 <200>;
+                                ti,y-max = /bits/ 16 <3900>;
+                                ti,swap-xy = <0>;
+                                ti,pressure-min = /bits/ 16 <0>;
+                                ti,pressure-max = /bits/ 16 <255>;
+                                ti,x-plate-ohms = /bits/ 16 <60>;
+                                ti,debounce_max = /bits/ 16 <15000>;
+                                ti,debounce_tol = /bits/ 16 <65535>;
+                                ti,debounce_rep = /bits/ 16 <100>;
+                                ti,vref-delay-usecs = /bits/ 16 <450>;
+                                ti,keep_vref_on =  <1>;
+                                ti,settle_delay_usecs = /bits/ 16 <100>;
+                                ti,penirq-recheck-delay-usecs = /bits/ 16 <100>;
+                        };
+                };
+        };
+};
