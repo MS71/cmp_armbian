@@ -58,84 +58,63 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 - cd rootfs
 - scp -r * root@bananapim2zero:/
 
-## Bluetooth Audio via A2DP ...
-- install origionale armbian image on sdcard
+## Bluetooth Audio via A2DP with premade image ...
+- install image Armbian_5.41_Bananapim2zero_Ubuntu_xenial_default_3.4.113_desktop.img
 - boot and change root password (org rootpasswd=1234)
 - ... connect to internet ...
 - connect ethernet via usb adapter
-- apt-get update && apt-get upgrade
-- export TERM=vt100
+- >export TERM=vt100
 - armbian-config => install bluetooth support
-- reboot
+- >reboot
+- >ps -ef | grep blue                                                                                                                      
+- root      1062     1  0 17:30 ?        00:00:00 /usr/lib/bluetooth/bluetoothd                                                                                  
+- root      2926  2507  0 17:31 ttyS0    00:00:00 grep --color=auto blue                                                                                         
+- >bluetoothctl                                                                                                                            
+- [NEW] Controller 43:29:B1:55:01:01 bananapim2zero [default]                                                                                                    
+- [bluetooth]#
+- => bluetooth is working
 - login via ssh
-
-
-- apt-get install pkg-config libasound2-dev libglib2.0-dev libsbc-dev libfdk-aac-dev libtool
-
-- apt-get install bluez-tools bluez bluez-hcidump libbluetooth-dev 
-- systemctl enable bluetooth.service
-- change hci baudrate in /etc/init.d/ap6212-bluetooth from 115200 to 1500000
+- apt-get install pkg-config libasound2-dev libglib2.0-dev libsbc-dev libfdk-aac-dev libtool bluez-tools bluez bluez-hcidump libbluetooth-dev 
+- apt-get install gstreamer1.0-tools libgstreamer-plugins-base1.0-0 gstreamer1.0-alsa gstreamer1.0-plugins-base-apps gstreamer1.0-plugins-good
 - git clone https://github.com/Arkq/bluez-alsa.git
 - cd bluez-alsa
 -   autoreconf --install
 -   ./configure --enable-aac
 -   make && make install
-- reboot
+- change baudrate from 115200 to 1500000 in /etc/init.d/ap6212-bluetooth
 
+- 1.) terminal
+- >bluetoothctl
+- [NEW] Controller 43:29:B1:55:01:01 bananapim2zero [default]
+- [bluetooth]# agent on
+- Agent registered
+- [bluetooth]# scan on
+- Discovery started
+- [CHG] Controller 43:29:B1:55:01:01 Discovering: yes
+- [NEW] Device B8:D5:0B:C4:80:C7 JBL Charge 3
+- [bluetooth]# pair B8:D5:0B:C4:80:C7
+- Attempting to pair with B8:D5:0B:C4:80:C7
+- [CHG] Device B8:D5:0B:C4:80:C7 Class: 0x240414
+- [CHG] Device B8:D5:0B:C4:80:C7 Icon: audio-card
+- [CHG] Device B8:D5:0B:C4:80:C7 Connected: yes
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 00001101-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 00001108-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 0000110b-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 0000110c-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 0000110e-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 0000111e-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 00001200-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 UUIDs: 00001801-0000-1000-8000-00805f9b34fb
+- [CHG] Device B8:D5:0B:C4:80:C7 Paired: yes
+- Pairing successful
+- [CHG] Device B8:D5:0B:C4:80:C7 Connected: no
+- [bluetooth]# connect B8:D5:0B:C4:80:C7
+- Attempting to connect to B8:D5:0B:C4:80:C7
+- [CHG] Device B8:D5:0B:C4:80:C7 Connected: yes
+- Connection successful
 
+- 2.) terminal
+- >bluealsa
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Origional Armbian README
-
-Ubuntu and Debian images for ARM based single-board computers
-https://www.armbian.com
-
-## How to build my own image or kernel?
-
-Supported build environments:
-
-- [Ubuntu Xenial 16.04 x64](http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/netboot/mini.iso) guest inside a [VirtualBox](https://www.virtualbox.org/wiki/Downloads) or other virtualization software,
-- [Ubuntu Xenial 16.04 x64](http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/netboot/mini.iso) guest managed by [Vagrant](https://www.vagrantup.com/). This uses Virtualbox (as above) but does so in an easily repeatable way. Please check the [Armbian with Vagrant README](https://docs.armbian.com/Developer-Guide_Using-Vagrant/) for a quick start HOWTO,
-- [Ubuntu Xenial 16.04 x64](http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/netboot/mini.iso) inside a [Docker](https://www.docker.com/), [systemd-nspawn](https://www.freedesktop.org/software/systemd/man/systemd-nspawn.html) or other container environment [(example)](https://github.com/igorpecovnik/lib/pull/255#issuecomment-205045273). Building full OS images inside containers may not work, so this option is mostly for the kernel compilation,
-- [Ubuntu Xenial 16.04 x64](http://archive.ubuntu.com/ubuntu/dists/xenial-updates/main/installer-amd64/current/images/netboot/mini.iso) running natively on a dedicated PC or a server (**not** recommended unless you build kernel only, for full OS images always use virtualization as outlined above),
-- **20GB disk space** or more and **2GB RAM** or more available for the VM, container or native OS,
-- superuser rights (configured `sudo` or root access).
-
-**Execution**
-
-	apt-get -y install git
-	git clone https://github.com/armbian/build
-	cd build
-	./compile.sh
-
-Make sure that full path to the build script does not contain spaces.
-
-You will be prompted with a selection menu for a build option, a board name, a kernel branch and an OS release. Please check the documentation for [advanced options](https://docs.armbian.com/Developer-Guide_Build-Options/) and [additional customization](https://docs.armbian.com/Developer-Guide_User-Configurations/).
-
-Build process uses caching for the compilation and the debootstrap process, so consecutive runs with similar settings will be much faster.
-
-## Reporting issues
-
-Please read [this](https://github.com/igorpecovnik/lib/blob/master/.github/ISSUE_TEMPLATE.md) notice first before opening an issue.
-
-## More info:
-
-- [Documentation](https://docs.armbian.com/Developer-Guide_Build-Preparation/)
-- [Prebuilt images](https://www.armbian.com/download/)
-- [Support forums](https://forum.armbian.com/ "Armbian support forum")
-- [Project at Github](https://github.com/igorpecovnik/lib)
+- 3.) terminal
+- gst-launch-1.0 audiotestsrc volume=0.001 ! alsasink device=bluealsa:HCI=hci0,DEV=B8:D5:0B:C4:80:C7,PROFILE=a2dp
