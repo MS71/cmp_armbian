@@ -59,23 +59,29 @@ THis project is an armbian for for my small Banana PI M2+ Zero Car Media Player
 - scp -r * root@bananapim2zero:/
 
 ## Bluetooth Audio via A2DP ...
-- install image, change root password
+- install origionale armbian image on sdcard
+- boot and change root password (org rootpasswd=1234)
 - ... connect to internet ...
-- sudo apt-get update
-- sudo apt-get upgrade
-- apt-get install bluez-tools bluez bluez-hcidump libbluetooth-dev
-- apt-get install pkg-config libasound2-dev libglib2.0-dev libsbc-dev libfdk-aac-dev 
-=> uncomment AutoEnable=true in /etc/bluetooth/main.conf
-- systemctl enable bluetooth.service 
+- connect ethernet via usb adapter
+- apt-get update && apt-get upgrade
+- export TERM=vt100
+- armbian-config => install bluetooth support
+- reboot
+- login via ssh
+
+
+- apt-get install pkg-config libasound2-dev libglib2.0-dev libsbc-dev libfdk-aac-dev libtool
+
+- apt-get install bluez-tools bluez bluez-hcidump libbluetooth-dev 
+- systemctl enable bluetooth.service
+- change hci baudrate in /etc/init.d/ap6212-bluetooth from 115200 to 1500000
 - git clone https://github.com/Arkq/bluez-alsa.git
 - cd bluez-alsa
 -   autoreconf --install
 -   ./configure --enable-aac
 -   make && make install
-#- exit /etc/init.d/ap6212-bluetooth change next line
-#-  => "hciattach /dev/$PORT bcm43xx 115200 flow bdaddr $MAC_OPTIONS" 
-#-  to "hciattach /dev/$PORT bcm43xx 1500000 flow bdaddr $MAC_OPTIONS"
 - reboot
+
 
 
 
